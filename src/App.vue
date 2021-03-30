@@ -149,7 +149,7 @@ button {
   }
 
   main {
-    padding: 0;
+    padding: 0 0 5.2rem;
   }
 
   .check {

@@ -13,6 +13,7 @@
       @clear="clearCompleted"
     />
     <FilterItems :filter="filter" @show="show" />
+    <p v-if="filteredList.length > 1">Drag and drop to reorder list</p>
   </section>
 </template>
 
@@ -104,6 +105,15 @@ form input::placeholder {
   color: var(--txt-color-3);
 }
 
+p {
+  color: var(--txt-color-3);
+  font-size: 1.4rem;
+  letter-spacing: 0.019rem;
+  line-height: 1;
+  margin-top: 4rem;
+  text-align: center;
+}
+
 @media (min-width: 640px) {
   form label {
     column-gap: 24px;
@@ -113,6 +123,10 @@ form input::placeholder {
   form input {
     font-size: 1.8rem;
     letter-spacing: -0.025rem;
+  }
+
+  p {
+    margin-top: -2rem;
   }
 }
 </style>

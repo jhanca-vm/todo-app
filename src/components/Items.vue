@@ -1,6 +1,14 @@
 <template>
   <ul class="box">
-    <li v-for="({ item, completed }, i) in list" :key="i + 1">
+    <li
+      v-for="({ item, completed }, i) in list"
+      :key="i + 1"
+      :draggable="list.length > 1"
+      @dragstart="e => e.dataTransfer.setData('id', `i${i + 1}`)"
+      @dragleave.prevent="e => (offsetY = e.offsetY)"
+      @dragover.prevent
+      @drop="reorder"
+    >
       <input :id="`i${i + 1}`" type="radio" :checked="completed" />
       <label :for="`i${i + 1}`" @click="$emit('checked', i)">
         {{ item }}
@@ -25,9 +33,31 @@ export default {
   props: {
     list: Array,
   },
+  data() {
+    return {
+      offsetY: 0,
+    };
+  },
   computed: {
     quantity() {
       return this.list.filter(({ completed }) => !completed).length;
+    },
+  },
+  methods: {
+    reorder(e) {
+      if (e.target.nodeName === 'LI' && this.offsetY < 0) {
+        e.target.parentNode.insertBefore(
+          document.getElementById(e.dataTransfer.getData('id')).parentNode,
+          e.target
+        );
+      }
+
+      if (e.target.nodeName === 'LI' && this.offsetY > 0) {
+        e.target.parentNode.insertBefore(
+          document.getElementById(e.dataTransfer.getData('id')).parentNode,
+          e.target.nextSibling
+        );
+      }
     },
   },
 };
